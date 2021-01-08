@@ -136,6 +136,11 @@ def testChar(array, idx):
 
 
 def getChar(array, idx):
+    ''' (list of int, int) -> str
+    >>> l = [1, 2, 5, 15, 12, 1, 2, 5, 15, 12, 2, 4, 8, 12, 6, 30, 64] ; getChar(array, 0)
+    10110101
+    
+    '''
     charBin = ''
     for x in range(idx, idx + 8):
         charBin = charBin + str(array[x] % 2)
