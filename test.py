@@ -6,7 +6,7 @@ import argparse
 import binascii
 
 def stringToBinary(str):
-    '''(str) -> str
+    ''' (str) -> str
     >>> stringToBinary("hello world")
     0110100001100101011011000110110001101111001000000111011101101111011100100110110001100100
     >>>stringToBinary("bonjour le monde")
@@ -19,7 +19,7 @@ def stringToBinary(str):
 
 
 def binaryToString(string):
-    '''(str) -> str
+    ''' (str) -> str
     >>> binaryToString("0110100001100101011011000110110001101111001000000111011101101111011100100110110001100100")
     hello world
     >>>binaryToString("01100010011011110110111001101010011011110111010101110010001000000110110001100101001000000110110101101111011011100110010001100101")
@@ -34,6 +34,9 @@ def binaryToString(string):
 
 
 def pngToArray(filepath):
+    ''' (str) -> int, int, list of int
+    give filename of image and return the width, height of the image and tranform the image to an array RGBA
+    '''
     
     data = png.Reader(filename=filepath).asRGBA8()
     
@@ -43,15 +46,19 @@ def pngToArray(filepath):
     
     rgbaArray = []
 
-    for j in rgbaList:
-        for color in range (0, len(j)):
-            rgbaArray.append(j[color])
+    for i in rgbaList:
+        for j in range (0, len(i)):
+            rgbaArray.append(i[j])
     return width, height , rgbaArray
 
 
 
 
 def rgbaPair(array):
+    ''' (list of int) -> list of int
+    >>> rgbaPair([1, 2, 5, 15])
+    [0, 2, 4, 14]
+    '''
     for idx, val in enumerate(array):
         if val % 2 == 1:
             array[idx] = array[idx] - 1
@@ -61,6 +68,9 @@ def rgbaPair(array):
 
 
 def arrayToImage(w, h,array, newImage):
+    ''' (int, int, list of int, str) -> NOneType
+    the function create a new image with name of the str parameter and values of list of int
+    '''
     image = png.Writer(w, h, greyscale=False, alpha=True)
     f = open(newImage, 'wb')
     List = arrayToList(w, array)
@@ -71,6 +81,10 @@ def arrayToImage(w, h,array, newImage):
 
 
 def arrayToList(w, array):
+    ''' (int, list of int) -> list of list of int
+    >>> arrayToList(2, [1, 2, 5, 15])
+    [[1, 2], [5, 15]]
+    '''
     List = [] 
     tmp = []
     reLoop = w * 4
@@ -85,6 +99,9 @@ def arrayToList(w, array):
 
 
 def encode(image, text, newImage):
+    '''(str, str, str) -> NoneType
+    give a name of image, text to hide and name of the new image and create a new image with the text encoded inside
+    '''
     w, h, array = pngToArray(image)
     BinText = stringToBinary(text)
     print(BinText)
@@ -104,6 +121,13 @@ def encode(image, text, newImage):
 
 
 def testChar(array, idx):
+    ''' (list of int, int) -> Boolean
+    >>> l = [1, 2, 5, 15, 12, 1, 2, 5, 15, 12, 2, 4, 8, 12, 6, 30, 64] ; testChar(array, 0)
+    True
+     >>> l = [1, 2, 5, 15, 12, 1, 2, 5, 15, 12, 2, 4, 8, 12, 6, 30, 64] ; testChar(array, 9)
+    False
+    if 8 consecutive elements are pair it means that there is no hidden character
+    '''
     for x in range(idx, idx + 8):
         if array[x] % 2 == 1:
             return True
