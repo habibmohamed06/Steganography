@@ -2,7 +2,6 @@ import sys
 import os
 sys.path.append(os.path.join('pypng-main','code'))
 import png
-import argparse
 import binascii
 
 def stringToBinary(str):
@@ -112,7 +111,6 @@ def encode(image, text, newImage):
 
     if lenArray > lenTextB + 8:
         for i in range(lenTextB):
-            print(BinText[i])
             array[i] += int(BinText[i])
     else:
         print('text too long !!!!')
@@ -159,10 +157,37 @@ def decode(image):
                 i = i + 9
             else:
                 break
-    
-    print(BinText)
 
     print(binaryToString(BinText))
 
-encode('image.png', 'salut', 'newImage.png')
-decode('newImage.png')
+if __name__ != '__main__':
+    print("This file was loaded as a module.")
+else:
+    import argparse as ap
+
+    p = ap.ArgumentParser()
+    p.add_argument("-w", '--write', action='store_true', help='writing mode')
+    p.add_argument("-f", '--image', help='image path')
+    p.add_argument("-t", '--text', help='text')
+    p.add_argument('output', help='image output')
+    args = p.parse_args()
+
+    if args.write:
+        if args.image and args.text:
+            image = args.image
+            text = args.text
+        elif args.image:
+            text = input("Enter the text you want to hide : ") 
+            image = args.image
+        elif args.text:
+            image = input("Enter the name of your image : ")
+            text = args.text
+
+        else:
+            image = input("Enter the name of your image : ") 
+            text = input("Enter the text you want to hide : ") 
+        
+        encode(image, text, args.output)
+
+    else:
+        decode(args.output)
