@@ -2,7 +2,7 @@
  **Technical Specifications:**
  
  - Mode write:
- 
+  
 
 ```console 
 $  python main.py png.png -w -f image.png -t "any text that you want to hide" newImage.png
